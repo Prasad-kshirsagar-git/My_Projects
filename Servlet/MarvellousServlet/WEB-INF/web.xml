@@ -1,0 +1,11 @@
+<web-app>
+ <servlet>
+     <servlet-name>
+                            MyServlet
+    </servlet-name>
+  
+    <servlet-class>
+                            MyServlet
+    </servlet-class>
+ </servlet>
+</web-app>

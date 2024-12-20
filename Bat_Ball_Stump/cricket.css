@@ -1,0 +1,47 @@
+body{
+  text-align: center; 
+}
+
+#result{
+  text-align: center;
+}
+
+.choice{
+  display: flex;
+  margin: 20px;
+  justify-content: space-evenly;
+}
+
+.label{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.Score{
+  margin: 20px;
+
+}
+
+#yourScore{
+    display: block;
+    margin: 20px;
+}
+
+#txt_Score{
+  text-align: center;
+  width: 20%;
+}
+
+.image{
+  height: 75px;
+
+}
+
+.btn_Choice {
+  height: 100px;
+  width: 100px;
+  border: none;
+  margin: 40px;
+  border-radius: 40px;
+  cursor: pointer;
+}

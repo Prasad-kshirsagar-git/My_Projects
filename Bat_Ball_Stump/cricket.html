@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Cricket Game</title>
+  <link rel="stylesheet" href="cricket.css">
+</head>
+<body>
+
+  <h1>BAT BALL STUMP GAME</h1>
+
+  <button  class = "btn_Choice" id = "btn_Bat" onclick="
+    myChoice = yourChoice('BAT');
+    compChoice = generateComputerChoice();
+    finalResult(compChoice ,myChoice);
+    scoreDisplay();
+  ">
+  <img class = "image" src="images/bat_img.jpeg" alt="Bat Image">  
+</button>
+
+  <button class = "btn_Choice" id = "btn_Ball" onclick="
+    myChoice = yourChoice('BALL');
+    compChoice = generateComputerChoice();
+    finalResult(compChoice ,myChoice);
+    scoreDisplay();
+  ">
+  <img class = "image" src="images/Ball_Img.jpeg" alt="Ball Image">
+  </button>
+
+  <button class = "btn_Choice" id = "btn_Stump" onclick="
+    myChoice = yourChoice('STUMP');
+    compChoice = generateComputerChoice();
+    finalResult(compChoice,myChoice);
+    scoreDisplay();
+  ">
+  <img class = "image" src="images/stump_img.jpeg" alt="Stump Image">
+  </button>
+
+  <hr>
+
+  <div class="choice">
+    <textarea id="YourChoice" readonly></textarea>
+    <textarea id="CompChoice" readonly></textarea> 
+    <textarea id="FinalResult" readonly></textarea>
+
+  </div>
+
+  <div class="label">
+    <label id = "one">your choice</label>
+    <label id = "two">computer choice</label>
+    <label id = "three">Final Result</label>
+  </div>
+
+  <hr>
+
+  <div class="Score">
+    <textarea id="txt_Score" readonly></textarea><br>
+    <label id="yourScore">Your Score</label>
+  </div>
+
+  <button id = "clear" onclick="
+  localStorage.clear()
+  resetScore(scoreStr)">Reset Score</button>
+
+  <script src="cricket.js">
+  </script>
+
+</body>
+</html>

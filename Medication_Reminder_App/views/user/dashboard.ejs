@@ -1,0 +1,66 @@
+<%- include('../partials/head') %>
+  </head>
+
+  <body>
+    <%- include('../partials/nav') %>
+      <main>
+        <div class="dashboard-container">
+          <!-- Greeting and Date -->
+          <div class="card">
+            <h2>Good Morning, <%= userName %>!</h2>
+            <p>Today's Date: <%= new Date().toLocaleDateString("en-US", { weekday: 'long' , year: 'numeric' ,
+                month: 'long' , day: 'numeric' }) %>
+            </p>
+          </div>
+
+          <!-- Upcoming Reminders -->
+          <div class="card">
+            <h3>Upcoming Reminders</h3>
+            <ul>
+              <% reminders.forEach(reminder=> { %>
+                <li><strong>
+                    <%= reminder.name %>
+                  </strong> - <%= reminder.time %>
+                </li>
+                <% }) %>
+            </ul>
+          </div>
+
+          <!-- Adherence Summary -->
+          <div class="card">
+            <h3>Adherence Summary</h3>
+            <p>
+              <%= adherenceSummary %>
+            </p>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <h3>Quick Actions</h3>
+            <div class="button-group">
+              <a href="/add-medicine" class="button success">Add Medication</a>
+              <a href="/edit-schedule" class="button warning">Edit Schedule</a>
+              <a href="/view-all" class="button info">View All</a>
+            </div>
+          </div>
+
+          <!-- Calendar -->
+          <div class="card">
+            <h3>Calendar</h3>
+            <p>Today's Date: <%= new Date().toLocaleDateString() %>
+            </p>
+          </div>
+
+          <!-- Notifications -->
+          <div class="card">
+            <h3>Notifications</h3>
+            <p>
+              <%= notifications %>
+            </p>
+          </div>
+        </div>
+
+      </main>
+  </body>
+
+  </html>

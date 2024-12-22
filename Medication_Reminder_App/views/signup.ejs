@@ -32,7 +32,13 @@
         <div class="input-group">
           <input type="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="confirmPassword" required>
         </div>
+
+        <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+          <p class="error-message"><%= errorMessage %></p>
+        <% } %>
+
         <button type="submit" class="btn">create account</button>
+
       </form>
     </div>
   </div>

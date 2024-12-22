@@ -1,0 +1,33 @@
+ </head>
+  <body>
+    <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"> Login Page</h1>
+      <form action="/login" method="POST">
+
+        <input
+          type="text"
+          name="email"
+          id = "email"
+          placeholder="Enter Email here"
+          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+        />
+
+        <input
+          type="password"
+          name="password"
+          id = "password"
+          placeholder="Enter Password here"
+          class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+        />
+
+        <button type="submit" class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300" >Next</button>
+        
+        <div class="options">
+          <a href="/forgot-password" class = "to-blue-900 hover:bg-red-700 transition duration-300">Forgot password?</a>
+          <a href="/signup" class = "to-blue-900 hover:bg-red-700 transition duration-300">Create account</a>
+      </div>
+
+      </form>
+    </main>
+  </body>
+</html>

@@ -14,7 +14,7 @@ module.exports = class User {
     }
   }
 
-  saveUser() {
+  saveUser(userName, number, email, password) {
 
     const db = getDB();
     return db.collection("appUsers").insertOne(this);
@@ -30,7 +30,7 @@ module.exports = class User {
     return db.collection("appUsers").find({ email: userEmail }).next();
   }
 
-  matchAuthentication(userEmail, userPassword) {
+  authentication(userEmail, userPassword) {
     const db = getDB();
     return db.collection("appUsers").find({ email: userEmail, password: userPassword }).next();
   }

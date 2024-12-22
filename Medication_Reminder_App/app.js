@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/appRoutes');
 const rootDir = require('./utils/pathUtils');
 
 const {mongoConnect} = require('./utils/databaseUtils');

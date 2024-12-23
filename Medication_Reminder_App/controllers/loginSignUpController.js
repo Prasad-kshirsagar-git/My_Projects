@@ -35,65 +35,47 @@ exports.postLoginPage = (req, res, next) => {
           pageTitle: "Login Page",
           currentPage: "login",
           errorMessage: "Invalid email or password",
-          email: "",
-          password: "",
         });
       }
 
       // Compare the password
-      bcrypt
-        .compare(password, user.password)
-        .then((isMatch) => {
-          if (!isMatch) {
-            console.log("Invalid email or password");
-            return res.render("login", {
-              pageTitle: "Login Page",
-              currentPage: "login",
-              errorMessage: "Invalid email or password",
-              email: "",
-              password: "",
-            });
-          }
-
-          // Generate JWT
-          const token = jwt.sign(
-            { userId: user.id, email: user.email },
-            JWT_SECRET,
-            { expiresIn: "1h" }
-          );
-
-          console.log("User authenticated successfully");
-
-          const reminders = [
-            { name: "Aspirin 100mg", time: "Today at 8:00 PM" },
-            { name: "Metformin 500mg", time: "Tomorrow at 7:00 AM" },
-          ];
-          const adherenceSummary = "4/5 doses taken today.";
-          const notifications =
-            "You have 3 doses left of Metformin. Refill now.";
-
-          // Send token in response
-          res.cookie("authToken", token, { httpOnly: true, secure: true }); // Store token in a cookie (optional)
-          return res.render("user/dashboard", {
-            pageTitle: "Dashboard Page",
-            currentPage: "dashboard",
-
-            userName: user.userName,
-            reminders,  adherenceSummary, notifications});
-        })
-        .catch((err) => {
-          console.error("Password comparison error: ", err);
+      bcrypt.compare(password, user.password).then((isMatch) => {
+        if (!isMatch) {
+          console.log("Invalid email or password");
           return res.render("login", {
             pageTitle: "Login Page",
             currentPage: "login",
-            errorMessage: "Something went wrong. Please try again.",
+            errorMessage: "Invalid email or password",
             email: "",
             password: "",
           });
-        });
+        }
+
+        // Generate JWT
+        const token = jwt.sign(
+          { userId: user.id, email: user.email },
+          JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+
+        console.log("User authenticated successfully");
+
+        const reminders = JSON.stringify([]);
+
+        const adherenceSummary = "";
+        const notifications = "";
+        
+        const redirectUrl = `/user/dashboard?user=${encodeURIComponent(
+          JSON.stringify({ userName: user.userName, number: user.number, email: user.email })
+        )}&adherenceSummary=${encodeURIComponent(adherenceSummary)}&notifications=${encodeURIComponent(notifications)}&reminders=${encodeURIComponent(reminders)}`;
+
+        console.log("Redirecting to:", redirectUrl); // Debugging log
+        res.redirect(redirectUrl);
+
+      });
     })
     .catch((err) => {
-      console.error("Error finding user: ", err);
+      console.error("Error during login: ", err);
       return res.render("login", {
         pageTitle: "Login Page",
         currentPage: "login",
@@ -108,8 +90,8 @@ exports.authenticateToken = (req, res, next) => {
   const token = req.cookies.authToken; // Assuming the token is stored in a cookie
 
   if (!token) {
-    console.error("No token found");
-    return res.render("dashboard");
+    console.error("Invalid token: ");
+    return res.redirect("/login");
   }
 
   try {
@@ -147,15 +129,15 @@ exports.postSignupPage = (req, res, next) => {
           })
           .then(() => {
             console.log("User registered successfully");
-            return res.redirect("login", {
-              pageTitle: "signup Page",
-              currentPage: "signup",
+            return res.render("login", {
+              pageTitle: "login Page",
+              currentPage: "login",
               errorMessage: "Your Registration successfull",
             });
           })
           .catch((err) => {
             console.error("Error during registration:", err);
-            return res.render("signup", {
+            return res.redirect("/signup", {
               pageTitle: "signup Page",
               currentPage: "signup",
               errorMessage: "Something went wrong. Please try again.",
@@ -165,3 +147,10 @@ exports.postSignupPage = (req, res, next) => {
     });
   }
 };
+
+exports.postDashboard = (req, res, next) => {
+  res.render("user/dashboard", {
+    pageTitle: "dashborad",
+    currentPage: "dashborad",
+  });
+}

@@ -1,0 +1,39 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+
+  <div class="form-container">
+    <div class="form-card">
+      <h2 class="form-title">Medicine</h2>
+      <form action="/user/dashboard" method="POST">
+        <!-- Medicine Name -->
+        <div class="form-group">
+          <label for="medicine-name">Medicine Name</label>
+          <input type="text" id="medicine-name" name="medicineName" placeholder="Enter medicine name" required>
+        </div>
+        <!-- Doses -->
+        <div class="form-group">
+          <label for="doses">Doses</label>
+          <input type="number" id="doses" name="doses" placeholder="Enter number of doses" min="1" required>
+        </div>
+        <!-- Schedule Time -->
+        <div class="form-group">
+          <label for="schedule-time">Schedule Time</label>
+          <input type="time" id="schedule-time" name="scheduleTime" required>
+        </div>
+        <!-- Reminder Notes -->
+        <div class="form-group">
+          <label for="reminder-notes">Reminder Notes</label>
+          <textarea id="reminder-notes" name="reminderNotes" placeholder="Enter any notes (optional)" rows="4"></textarea>
+        </div>
+        <!-- Submit Button -->
+        <div class="form-group">
+          <button type="submit" class="btn-submit">Add Medicine</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

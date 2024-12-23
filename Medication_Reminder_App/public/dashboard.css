@@ -1,11 +1,21 @@
+h1 {
+  margin: 0;
+  padding: 10px;
+  font-weight: 900;
+  background-color: rgb(6, 157, 69);
+  text-align: center;
+  box-shadow: 0 20px 20px rgb(218, 6, 6);
+  
+}
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
+  background-color: rgb(12, 158, 95);
 }
 
 .dashboard-container {
+  font-family: Arial, sans-serif;
   width: 90%;
   max-width: 800px;
   margin: 20px auto;

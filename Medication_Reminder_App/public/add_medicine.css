@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(12, 158, 95);
+}
+
+/* Form Container */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* Form Card */
+.form-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  padding: 20px 30px;
+}
+
+/* Form Title */
+.form-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Labels */
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Input Fields */
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* Textarea */
+.form-group textarea {
+  resize: none;
+}
+
+/* Submit Button */
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}

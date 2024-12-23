@@ -2,6 +2,9 @@
   </head>
 
   <body>
+    <h1>
+      MEDICATION REMINDER APP
+    </h1>
     <%- include('../partials/nav') %>
       <main>
         <div class="dashboard-container">
@@ -30,6 +33,31 @@
                       <li>Please Add Medicine</li>
                       <% } %>
             </ul>
+          </div>
+
+          <!-- Adherence Summary -->
+          <div class="card">
+            <h3>Adherence Summary</h3>
+            <p>
+              <%= adherenceSummary %>
+            </p>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <h3>Quick Actions</h3>
+            <div class="button-group">
+              <a href="/add-medicine" class="button success">Add Medication</a>
+              <a href="/edit-schedule" class="button warning">Edit Schedule</a>
+              <a href="/view-all" class="button info">View All</a>
+            </div>
+          </div>
+
+          <!-- Calendar -->
+          <div class="card">
+            <h3>Calendar</h3>
+            <p>Today's Date: <%= new Date().toLocaleDateString() %>
+            </p>
           </div>
 
           <!-- Notifications -->

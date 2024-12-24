@@ -6,7 +6,8 @@ const {
   postLoginPage,
   postSignupPage,
   authenticateToken,
-  postDashboard
+  postDashboard,
+  authenticateUser
 } = require("../controllers/loginSignUpController");
 
 const router = express.Router();
@@ -27,30 +28,35 @@ router.post("/signUp", postSignupPage);
 // Route for user dashboard (GET) with authentication middleware
 // 
 
-router.get("/user/dashboard", (req, res) => {
-  const { user, adherenceSummary, notifications, reminders } = req.query;
+router.get("/user/dashboard",authenticateUser, (req, res) => {
+  const { user, notifications, reminders } = req.query;
 
+  const userId = req.session.userId;
+  
+  console.log("userId from /user/dashboard is :=> ",userId);
   // Log the query parameters for debugging
   console.log("Query Parameters Received:", req.query);
 
-  // Handle missing query parameters
-  // if (!user || !adherenceSummary || !notifications || !reminders) {
-  //   console.error("Missing query parameters");
-  //   return res.redirect("/login");
-  // }
+  if(!userId) {
+    console.log("user not authenticat");
+    return res.redirect('/login');
+  }
 
   try {
     // Parse the serialized data
-    const parsedUser = JSON.parse(user);
-    const parsedReminders = JSON.parse(reminders);
+    const parsedUser = user ? JSON.parse(user) : {};
+    const parsedReminders = reminders ? JSON.parse(decodeURIComponent(reminders)) : [];
+
+    console.log("parsed User is :=> ", parsedUser);
+    console.log("Reminders in appRoutes is :=> ", parsedReminders);
 
     res.render("user/dashboard", {
       pageTitle: "Dashboard",
       currentPage: "dashboard",
-      userName: parsedUser.userName,
+      userName: parsedUser.userName || "Unknown",
       reminders: parsedReminders,
-      adherenceSummary,
-      notifications,
+      notifications: notifications || "No Notifications",
+      userId,
     });
   } 
   catch (err) {
@@ -58,7 +64,5 @@ router.get("/user/dashboard", (req, res) => {
     return res.redirect("/login");
   }
 });
-
-router.post("/user/dashboard", postDashboard)
 
 module.exports = router;

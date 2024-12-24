@@ -1,5 +1,3 @@
-const mysql = require("mysql2");
-const { ObjectId } = require("mongodb");
 const { getDB } = require("../utils/databaseUtils");
 
 module.exports = class User {
@@ -20,9 +18,10 @@ module.exports = class User {
     return db.collection("appUsers").insertOne(this);
   }
 
-  static fetchAllUsers(userId) {
+  static findUserById(userId) {
+    console.log("typeof userId in user.js file :=> ",typeof(userId));
     const db = getDB();
-    return db.collection("appUsers").find().toArray();
+    return db.collection("appUsers").findOne({_id: userId});
   }
 
   static findUserByEmail(userEmail) {

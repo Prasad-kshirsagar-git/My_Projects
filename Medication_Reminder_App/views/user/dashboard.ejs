@@ -2,7 +2,7 @@
   </head>
 
   <body>
-    <%- include('../partials/nav') %>
+    <%- include('../partials/nav', {userId: userId}) %>
       <main>
         <div class="dashboard-container">
           <!-- Greeting and Date -->
@@ -17,12 +17,12 @@
           <div class="card">
             <h3>Upcoming Reminders</h3>
             <ul>
-              <% if (reminders && reminders.length> 0){%>
+              <% if (reminders.length> 0){%>
                 <% reminders.forEach(reminder=> { %>
                   <li>
                     <strong>
-                      <%= reminder.name %>
-                    </strong> - <%= reminder.time %>
+                      <%= reminder.medicineName %>
+                    </strong> - <%= reminder.scheduleTime %>
                   </li>
                   <% }); %>
                     <% } else { %>

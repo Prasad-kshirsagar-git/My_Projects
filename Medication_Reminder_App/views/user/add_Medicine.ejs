@@ -1,7 +1,7 @@
 <%- include('../partials/head') %>
 </head>
 <body>
-  <%- include('../partials/nav') %>
+  <%- include('../partials/nav', {userId: userId}) %>
 
   <div class="form-container">
     <div class="form-card">
@@ -27,6 +27,11 @@
           <label for="reminder-notes">Reminder Notes</label>
           <textarea id="reminder-notes" name="reminderNotes" placeholder="Enter any notes (optional)" rows="4"></textarea>
         </div>
+
+        <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+          <p class="error-message"><%= errorMessage %></p>
+        <% } %>
+        
         <!-- Submit Button -->
         <div class="form-group">
           <button type="submit" class="btn-submit">Add Medicine</button>

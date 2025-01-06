@@ -1,0 +1,56 @@
+<%- include('layouts/head') %>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <span class="material-symbols-outlined">
+      </span>
+      <h1>Sign Up</h1>
+      <form action="/signup" method="POST">
+
+        <div class="userRole">
+          <label id="rolelable">Your Role: </label>
+          <select name="role" id="role" required onchange="SecurityKeyForSignUp()">
+            <option value="Default">Default</option>
+            <option value="Patient">Patient</option>
+            <option value="Doctor">Doctor</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <input type="text" name="userName" id="userName" placeholder="Enter your name" required>
+        </div>
+        <div class="input-group">
+          <input type="text" name="number" id="number" placeholder="Phone number" required>
+        </div>
+        <div class="input-group">
+          <input type="email" name="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <input type="password" name="password" id="password" placeholder="Password" required>
+        </div>
+        <div class="input-group">
+          <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
+        </div>
+
+        <!-- Security Key Field (Initially Hidden) -->
+        <div class="input-group" id="securityKeyContainer" style="display: none;">
+          <input type="text" name="securityKey" id="securityKey" placeholder="Enter Security Key" required>
+        </div>
+
+        <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+          <p class="<%= errorMessage.includes('successful') ? 'success-message' : 'error-message' %>">
+            <%= errorMessage %>
+          </p>
+        <% } %>
+
+        <button type="submit" class="btn">Create Account</button>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

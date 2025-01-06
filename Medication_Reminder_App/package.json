@@ -4,15 +4,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css --watch",
+    "tailwind": "tailwindcss -i ./views/input.css -o ./public/css/output.css --watch",
     "start": "nodemon app.js & npm run tailwind"
   },
   "keywords": [],
   "author": "Prasad Kshirsagar",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.4",
     "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -23,8 +25,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.12.0",
     "mysql2": "^3.11.5",
+    "nodemailer": "^6.9.16",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "twilio": "^5.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

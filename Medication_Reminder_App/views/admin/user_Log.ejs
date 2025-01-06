@@ -1,0 +1,30 @@
+<%- include('../layouts/head') %>
+</head>
+<body>
+  <%- include('../layouts/adminNav') %>
+
+  <main>
+    <h1 style="background-color: rgb(195, 241, 221);">Logs of <%= userName %></h1>
+
+    <!-- Flex container for medicines -->
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search logs..." />
+      <button id="searchButton" onclick="searchLogs()">Search</button>
+    </div>
+
+    <!-- Render the logs inside the container -->
+    <div class="user-container">
+      <% userLog.forEach(function(log) { %>
+        <div class="user-card" data-id="<%= log._id %>">
+          <p><strong>Medicine taken date: </strong> <%= log.date %></p>
+          <p><strong>Medicine taken time: </strong> <%= log.time %></p>
+          <p><strong>Medicine name: </strong> <%= log.medicineName %></p>
+          <p><strong>Total Dosage: </strong> <%= log.totalDosage %></p>
+          <p><strong>Remaining Dosage: </strong> <%= log.remainingDosage %></p>
+          <p><strong>Schedule Time: </strong> <%= log.scheduleTime %></p>
+        </div>
+      <% }); %>
+    </div>
+  </main>
+</body>
+</html>

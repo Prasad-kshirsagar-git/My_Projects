@@ -5,37 +5,35 @@
 <nav class="navbar">
   <ul class="nav-list">
     <li class="nav-item">
-      <a href="/user/profile" class="nav-link">
-        <i class="fa fa-user nav-icon"></i>
-        <span class="nav-text">Profile</span>
+      <a href="/user/dashboard" class="nav-link">
+        <i class="fa fa-home nav-icon"></i>
+        <span class="nav-text">Home</span>
       </a>
     </li>
 
     <li class="nav-item">
-      <a href="/user/add-medicine?userId=<%= userId%>" class="nav-link">
+      <a href="/user/add-medicine" class="nav-link">
         <i class="fa fa-plus-circle nav-icon"></i>
         <span class="nav-text">Add Medicine</span>
       </a>
     </li>
     
     <li class="nav-item">
-      <a href="/user/all-medicines" class="nav-link">
-        <i class="fa fa-list nav-icon"></i>
-        <span class="nav-text">All Medicines</span>
-      </a>
-    </li>
-    <li class="nav-item">
       <a href="/user/edit-medicine" class="nav-link">
         <i class="fa fa-edit nav-icon"></i>
         <span class="nav-text">Edit Medicine</span>
       </a>
     </li>
+    
     <li class="nav-item">
-      <a href="/logout" class="nav-link">
-        <i class="fa fa-sign-out-alt nav-icon"></i>
-        <span class="nav-text">Logout</span>
-      </a>
+      <form action="/api/logout" method="POST" style="display: inline;">
+        <button id="btn-logout" type="submit" class="nav-link">
+          <i class="fa fa-sign-out-alt nav-icon"></i>
+          <span class="nav-text">Logout</span>
+        </button>
+      </form>
     </li>
+    
   </ul>
 </nav>
 </header>

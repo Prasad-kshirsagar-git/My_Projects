@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link href="login.css" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=login" />
+<%- include('layouts/head') %>
 </head>
 
 <body>
@@ -17,6 +8,15 @@
       </span>
       <h1>Sign Up</h1>
       <form action="/signup" method="POST">
+
+        <div class="userRole">
+          <label id="rolelable">select app role : </label>
+          <select name="role" id="role" required >
+            <option value="user">User</option>
+            <option value="host">Admin</option>
+          </select>
+        </div>
+
         <div class="input-group">
           <input type="text" name="userName" id="userName" placeholder="Enter your name" required>
         </div>
@@ -30,9 +30,15 @@
           <input type="password" name="password" id="password" placeholder="Password" required>
         </div>
         <div class="input-group">
-          <input type="password" name="confimPassword" id="confimPassword" placeholder="confirm password" required>
+          <input type="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="confirmPassword" required>
         </div>
+
+        <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+          <p class="error-message"><%= errorMessage %></p>
+        <% } %>
+
         <button type="submit" class="btn">create account</button>
+
       </form>
     </div>
   </div>

@@ -1,14 +1,16 @@
-const express = require("express");
-
+const express = require('express');
 const {
   getAddMedicine,
-  postDashboard
-} = require("../controllers/dashboardController");
+  postDashboard,
+  editMedicine,
+} = require('../controllers/dashboardController');
+const { authenticateUser } = require("../middlewares/authenticateuser");
 
 const router = express.Router();
 
-router.get('/user/add-medicine', getAddMedicine);
-router.post("/user/dashboard", postDashboard);
-
+// Secure routes with `authenticateUser`
+router.get("/user/add-medicine", authenticateUser, getAddMedicine);
+router.get("/user/edit-medicine", authenticateUser, editMedicine);
+router.post("/user/dashboard", authenticateUser, postDashboard);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-<%- include('partials/head') %>
+<%- include('../layouts/head') %>
 </head>
 
 <body>
@@ -6,12 +6,24 @@
     <div class="login-box">
       <h1>log in</h1>
       <form id="loginForm" action="/login" method="POST">
+
+        <div class="userRole">
+          <label id="rolelable">Your Role: </label>
+          <select name="role" id="role" required onchange="SecurityKeyForLogin()">
+            <option value="Default">Default</option>
+            <option value="Patient">Patient</option>
+          </select>
+        </div>
         
         <div class="input-group">
           <input type="email" name="email" id="email" placeholder="Email or phone" required />
         </div>
         <div class="input-group">
           <input type="password" name="password" id="password" placeholder="Password" required />
+        </div>
+
+        <div class="input-group" id="securityKeyContainer" style="display: none;">
+          <input type="text" name="securityKey" id="securityKey" placeholder="Enter Security Key" required>
         </div>
 
         <button type="submit" class="btn">Next</button>
@@ -23,10 +35,13 @@
       </form>
       <div class="options">
         <a href="/forgot-password">Forgot password?</a>
-        <a href="/signup">Create account</a>
+        <a href="/signup">Create account</a><br>
+
       </div>
     </div>
   </div>
+
+  <script src="/js/script.js"></script>
 </body>
 
 </html>

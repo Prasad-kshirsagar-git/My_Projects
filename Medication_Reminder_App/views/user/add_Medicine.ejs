@@ -1,7 +1,7 @@
-<%- include('../partials/head') %>
+<%- include('../layouts/head') %>
 </head>
 <body>
-  <%- include('../partials/nav', {userId: userId}) %>
+  <%- include('../layouts/nav', {userId: userId}) %>
 
   <div class="form-container">
     <div class="form-card">
@@ -14,8 +14,8 @@
         </div>
         <!-- Doses -->
         <div class="form-group">
-          <label for="doses">Doses</label>
-          <input type="number" id="doses" name="doses" placeholder="Enter number of doses" min="1" required>
+          <label for="Total_Doses">Total Doses</label>
+          <input type="number" id="Total_Doses" name="Total_Doses" placeholder="Select total number of dosage" required>
         </div>
         <!-- Schedule Time -->
         <div class="form-group">

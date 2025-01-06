@@ -1,41 +1,36 @@
-const {ObjectId} = require('mongodb');
-const Medicine = require("../models/medicine")
-const helperController = require("../controllers/helperController")
+const Medicine = require("../models/medicine");
 const User = require("../models/user");
+const helperController = require("./helperController");
 
-exports.getAddMedicine = (req, res, next) => {
-  
+exports.getAddMedicine = async (req, res, next) => {
   const userId = req.session.userId;
 
-  console.log("user authenticate in /user/add_medicine route", userId);
-  
-  if(!userId) {
-    console.log("user not authenticate in /user/add_medicine route")
-    res.redirect('/user/dashboard');
-  }
-
-  console.log(`user id of user in addMedicine page is : ${userId}`);
+  // if (!userId) return res.redirect("/user/dashboard");
 
   res.render("user/add_Medicine", {
     pageTitle: "Add Medicine",
     currentPage: "add_Medicine",
-    userId
+    userId,
   });
-}
-
+};
 
 exports.postDashboard = async (req, res, next) => {
   const userId = req.session.userId;
-  const { medicineName, dosage, scheduleTime } = req.body;
+  const securityKey = req.session.securityKey;
 
-
-  if (!ObjectId.isValid(userId)) {
-    console.error("Invalid userId:", userId);
-    return res.redirect("/login");
-  }
+  let { medicineName, Total_Doses, scheduleTime } = req.body;
 
   try {
-    const existingMedicine = await Medicine.findMedicine(medicineName);
+
+    let existingMedicine;
+
+  if(securityKey) {
+    existingMedicine = await Medicine.findMedicineByKey(userId,medicineName,securityKey);
+  } else {
+    existingMedicine = await Medicine.findMedicine(userId, medicineName);
+  }
+    // existingMedicine = await Medicine.findMedicine(userId, medicineName, securityKey);
+
     if (existingMedicine) {
       return res.render("user/add_Medicine", {
         pageTitle: "Add Medicine",
@@ -45,20 +40,39 @@ exports.postDashboard = async (req, res, next) => {
       });
     }
 
-    const newMedicine = new Medicine(medicineName, dosage, scheduleTime, "not_Taken");
-    await newMedicine.addMedicine();
+    const RemainingDosage = Total_Doses;
+    let newMedicine;
 
-    const user = await User.findUserById(new ObjectId(userId));
+    if(securityKey) {
+      newMedicine = new Medicine(
+        userId,
+        medicineName,
+        Total_Doses,
+        scheduleTime,
+        RemainingDosage,
+        securityKey,
+        
+      )
+    } else {
+      newMedicine = new Medicine(
+        userId,
+        medicineName,
+        Total_Doses,
+        scheduleTime,
+        RemainingDosage,
+      );
+    }
+  
+    const user = await User.findUserById(userId);
 
     if (!user) {
-      console.error("User not found for userId:", userId);
       return res.redirect("/login");
     }
-    
-    const redirectUrl = await helperController.redirectUrl(user);
 
+    await newMedicine.addMedicine();
+
+    const redirectUrl = await helperController.redirectUrl(req, user);
     res.redirect(redirectUrl);
-
   } catch (error) {
     console.error("Error in postDashboard:", error);
     res.render("user/add_Medicine", {
@@ -69,5 +83,37 @@ exports.postDashboard = async (req, res, next) => {
     });
   }
 };
+
+exports.editMedicine = async (req, res, next) => {
+  const userId = req.session.userId;
+  const securityKey = req.session.securityKey;
+
+  if (!userId) return res.redirect("/user/dashboard");
+  let allMedicines;
+
+  if(securityKey) {
+    allMedicines = await Medicine.getAllMedicinesByKey(userId,securityKey);
+  } else {
+    allMedicines = await Medicine.getAllMedicinesById(userId);
+  }
+
+  res.render("user/edit_Medicine", {
+    pageTitle: "edit_Medicine",
+    currentPage: "edit_Medicine",
+    allMedicines,
+    userId,
+  });
+};
+
+exports.deleteMedicine = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Medicine.findByIdAndDelete(id);
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false, error: err.message });
+  }
+}
 
 

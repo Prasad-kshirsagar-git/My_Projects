@@ -1,36 +1,85 @@
-const { getDB } = require("../utils/databaseUtils");
+const { ObjectId } = require("mongodb");
+const { getDB } = require("../config/db");
 
 module.exports = class User {
-  constructor(userName, number, email, password, _id) {
+  constructor(role, userName, number, email, password, securityKey = null, _id) {
+    this.role = role;
     this.userName = userName;
     this.number = number;
     this.email = email;
     this.password = password;
+
+    if(role === 'Doctor' && securityKey ) {
+      this.securityKey = securityKey;
+    }
+
+    if(role === 'Patient' && securityKey ) {
+      this.securityKey = securityKey;
+    }
 
     if (_id) {
       this._id = _id;
     }
   }
 
-  saveUser(userName, number, email, password) {
+  collectionName = process.env.COLLECTION_USER;
 
-    const db = getDB();
-    return db.collection("appUsers").insertOne(this);
+  async saveUser() {
+    try {
+      const db = getDB();
+      return await db.collection(collectionName).insertOne(this);
+    } catch (err) {
+      console.error("Error saving user:", err);
+      throw err;
+    }
   }
 
-  static findUserById(userId) {
-    console.log("typeof userId in user.js file :=> ",typeof(userId));
-    const db = getDB();
-    return db.collection("appUsers").findOne({_id: userId});
+  static async AllUsers(securityKey) {
+    try {
+      const db = getDB();
+      return await db.collection(collectionName).find({securityKey: securityKey}).toArray();
+    } catch (err) {
+      console.error("Error fetching all users:", err);
+      throw err;
+    }
   }
 
-  static findUserByEmail(userEmail) {
-    const db = getDB();
-    return db.collection("appUsers").find({ email: userEmail }).next();
+  static async findUserById(userId) {
+    try {
+      if (!ObjectId.isValid(userId)) {
+        throw new Error("Invalid ObjectId string");
+    }
+      const db = getDB();
+      const id = new ObjectId(userId);
+      return await db.collection(collectionName).findOne({ _id: id });
+    } catch (err) {
+      console.error("Error finding user by ID:", err);
+      throw err;
+    }
   }
 
-  authentication(userEmail, userPassword) {
-    const db = getDB();
-    return db.collection("appUsers").find({ email: userEmail, password: userPassword }).next();
+  static async findUserBySecurityKey(securityKey) {
+    try {
+      const db = getDB();
+
+      return await db.collection('appUsers').findOne({ securityKey: securityKey });
+
+    } catch (err) {
+      console.error("Error finding Security Key:", err);
+      throw err;
+    }
   }
+
+  static async findUserByEmail(UserEmail) {
+    try {
+      const db = getDB();
+ 
+      return await db.collection('appUsers').findOne({ email: UserEmail });
+
+    } catch (err) {
+      console.error("Error finding user by email:", err);
+      throw err;
+    }
+  }
+
 };

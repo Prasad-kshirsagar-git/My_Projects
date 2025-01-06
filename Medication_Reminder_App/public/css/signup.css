@@ -95,3 +95,22 @@ h1 {
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+.userRole {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px; /* Adjust as needed */
+}
+
+#rolelable {
+  color: blue;
+  margin-right: 10px; /* Adjust as needed */
+}
+
+#role {
+  padding: 5px; 
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  color: blue;
+  background-color: rgb(209, 241, 209);
+}

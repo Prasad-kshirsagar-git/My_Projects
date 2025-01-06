@@ -1,7 +1,12 @@
-function loginError () {
-  const errorMessage = document.getElementById('errorMessage');
-    errorMessage.textContent = 'Email or password does not match';
-    errorMessage.style.display = 'block';
-}
-
-exports.loginError = loginError;
+const someController = (req, res, next) => {
+  try {
+    // Some logic here...
+    if (!req.user) {
+      const error = new Error("User not authenticated");
+      error.status = 401;
+      throw error;
+    }
+  } catch (err) {
+    next(err); // Pass the error to the errorHandler
+  }
+};

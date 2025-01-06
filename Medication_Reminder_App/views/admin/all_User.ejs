@@ -1,0 +1,37 @@
+<%- include('../layouts/head') %>
+</head>
+<body>
+  <%- include('../layouts/adminNav') %>
+
+  <main>
+    <h1 style="background-color: rgb(195, 241, 221);">All users List</h1>
+
+    <!-- Flex container for medicines -->
+
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search logs..."
+      />
+      <button id="searchButton" onclick="searchLogs()">Search</button>
+    </div>
+
+    <div class="user-container">
+      <% Users.forEach(function(user) { %>
+        <div class="user-card" data-id = "<%= user._id %>">
+          <p><strong>userId: </strong> <%= user._id %></p>
+          <p><strong>Role: </strong> <%= user.role %></p>
+          <p><strong>Name: </strong> <%= user.userName %></p>
+          <p><strong>number: </strong> <%= user.number%></p>
+          <p><strong>email: </strong> <%= user.email %></p>
+          <form action="/admin/user_log/<%= user._id %>" method="GET">
+            <button type="submit" class="check_Log">Check Log</button>
+          </form>
+        </div>
+
+      <% }); %>
+    </div>
+  </main>
+</body>
+</html>

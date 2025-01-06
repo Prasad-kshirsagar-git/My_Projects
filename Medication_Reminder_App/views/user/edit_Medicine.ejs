@@ -1,0 +1,31 @@
+<%- include('../layouts/head') %>
+</head>
+
+<body>
+  <%- include('../layouts/nav', { userId: userId }) %>
+  <main>
+    <h1 style="background-color: rgb(195, 241, 221);">Edit Medicines</h1>
+
+    <!-- Flex container for medicines -->
+    <div class="medicine-container">
+      <% allMedicines.forEach(function (medicine) { %>
+        <div class="medicine-card" 
+        data-id="<%= medicine._id %>" 
+        data-time="<%= medicine.scheduleTime %>"
+        data-name="<%= medicine.medicineName %>">
+          <h3><%= medicine.medicineName %></h3>
+          <p><strong>Dosage:</strong> <%= medicine.dosage %></p>
+          <p><strong>Schedule Time:</strong> <%= medicine.scheduleTime %></p>
+          <div class="btn">
+            <button class="delete-btn">Delete</button>
+            <button class="alarm-btn">Set Alarm</button>
+            <button class="taken-btn">Taken</button>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </main>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

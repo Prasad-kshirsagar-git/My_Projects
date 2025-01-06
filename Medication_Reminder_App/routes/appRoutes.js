@@ -1,68 +1,62 @@
-const express = require("express");
-
+const express = require('express');
+const { authenticateUser } = require("../middlewares/authenticateuser");
 const {
   getLoginPage,
   getSignupPage,
   postLoginPage,
   postSignupPage,
-  authenticateToken,
-  postDashboard,
-  authenticateUser
-} = require("../controllers/loginSignUpController");
+  postLogOut,
+} = require('../controllers/loginSignUpController');
+
+
+// Check if express is defined
+if (!express || typeof express.Router !== 'function') {
+  throw new Error("Express is not defined or not imported correctly in appRoutes.js");
+}
 
 const router = express.Router();
 
-// Route for login page (GET)
+// Define routes
 router.get("/", getLoginPage);
 router.get("/login", getLoginPage);
-
-// Route for signup page (GET)
 router.get("/signup", getSignupPage);
-
-// Route for login form submission (POST)
 router.post("/login", postLoginPage);
-
-// Route for signup form submission (POST)
 router.post("/signUp", postSignupPage);
+router.post('/api/logout', postLogOut);
 
-// Route for user dashboard (GET) with authentication middleware
-// 
-
-router.get("/user/dashboard",authenticateUser, (req, res) => {
-  const { user, notifications, reminders } = req.query;
-
+router.get("/user/dashboard",authenticateUser ,(req, res) => {
+  // const { user, notifications, reminders } = req.query;
   const userId = req.session.userId;
-  
-  console.log("userId from /user/dashboard is :=> ",userId);
-  // Log the query parameters for debugging
-  console.log("Query Parameters Received:", req.query);
 
-  if(!userId) {
-    console.log("user not authenticat");
-    return res.redirect('/login');
+  if (!userId) {
+    console.log("User not authenticated");
+    return res.redirect("/login");
   }
 
-  try {
-    // Parse the serialized data
-    const parsedUser = user ? JSON.parse(user) : {};
-    const parsedReminders = reminders ? JSON.parse(decodeURIComponent(reminders)) : [];
+  // Check if session data exists
+  if (req.session.redirectData) {
+    const { user, notifications, medicineHistory } = req.session.redirectData;
 
-    console.log("parsed User is :=> ", parsedUser);
-    console.log("Reminders in appRoutes is :=> ", parsedReminders);
-
+    // Use the data as needed (e.g., render a page or return JSON)
     res.render("user/dashboard", {
       pageTitle: "Dashboard",
       currentPage: "dashboard",
-      userName: parsedUser.userName || "Unknown",
-      reminders: parsedReminders,
-      notifications: notifications || "No Notifications",
+      userName: user.userName,
+      notifications,
+      medicineHistory,
       userId,
     });
-  } 
-  catch (err) {
-    console.error("Error parsing query parameters:", err);
-    return res.redirect("/login");
+  } else {
+    res.render("user/dashboard", {
+      pageTitle: "Dashboard",
+      currentPage: "dashboard",
+      userName: "Guest",
+      notifications: "No notifications available",
+      medicineHistory: [],
+      userId,
+    });
   }
 });
+
 
 module.exports = router;

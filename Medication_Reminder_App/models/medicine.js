@@ -1,29 +1,128 @@
-const mysql = require("mysql2");
+const { getDB } = require("../config/db");
 const { ObjectId } = require("mongodb");
-const { getDB } = require("../utils/databaseUtils");
 
 module.exports = class Medicine {
-  constructor(medicineName, dosage,scheduleTime, status) {
+  constructor(
+    userId,
+    medicineName,
+    totalDosage,
+    scheduleTime,
+    RemainingDosage,
+    securityKey = null
+  ) {
+    this.userId = userId;
     this.medicineName = medicineName;
-    this.dosage = dosage;
+    this.totalDosage = totalDosage;
     this.scheduleTime = scheduleTime;
-    this.status = status;
-    
+    this.RemainingDosage = RemainingDosage;
+
+    if (securityKey) {
+      this.securityKey = securityKey;
+    }
   }
 
-  addMedicine() {
+  collectionName = process.env.COLLECTION_MEDICINE;
 
-    const db = getDB();
-    return db.collection("medicine").insertOne(this);
+  async addMedicine() {
+    try {
+      const db = getDB();
+      return await db.collection(collectionName).insertOne(this);
+    } catch (err) {
+      console.error("Error adding medicine:", err);
+      throw err;
+    }
   }
 
-  static getAllMedicine() {
-    const db = getDB();
-    return db.collection("medicine").find().toArray();
+  static async getAllMedicinesByKey(userId, securityKey) {
+    try {
+      const db = getDB();
+      return await db
+        .collection(collectionName)
+        .find({ userId: userId, securityKey: securityKey })
+        .toArray();
+    } catch (err) {
+      console.error("Error fetching all medicines:", err);
+      throw err;
+    }
   }
 
-  static findMedicine(medicineName) {
-    const db = getDB();
-    return db.collection("medicine").find({ medicineName: medicineName }).next();
+  static async getAllMedicinesById(userId) {
+    try {
+      const db = getDB();
+      return await db.collection(collectionName).find({ userId: userId }).toArray();
+    } catch (err) {
+      console.error("Error fetching all medicines:", err);
+      throw err;
+    }
   }
+
+  static async findMedicineByKey(userId, medicineName, securityKey) {
+    try {
+      const db = getDB();
+      console.log("Inside findMedicine Method....");
+      return await db
+        .collection(collectionName)
+        .find({
+          userId: userId,
+          medicineName: medicineName,
+          securityKey: securityKey,
+        })
+        .next();
+    } catch (err) {
+      console.error("Error finding medicine:", err);
+      throw err;
+    }
+  }
+
+  static async findMedicine(userId, medicineName) {
+    try {
+      const db = getDB();
+      console.log("Inside findMedicine Method....");
+      return await db
+        .collection(collectionName)
+        .find({ userId: userId, medicineName: medicineName })
+        .next();
+    } catch (err) {
+      console.error("Error finding medicine:", err);
+      throw err;
+    }
+  }
+
+  static async findByIdAndDelete(medicineId) {
+    try {
+      const db = getDB();
+      return await db
+        .collection(collectionName)
+        .deleteOne({ _id: new ObjectId(medicineId) });
+    } catch (err) {
+      console.error("Error deleting medicine:", err);
+      throw err;
+    }
+  }
+
+  static async findById(medicineId) {
+    try {
+      const db = getDB();
+      return await db
+        .collection(collectionName)
+        .find({ _id: new ObjectId(medicineId) })
+        .next();
+    } catch (err) {
+      console.error("Error finding medicine:", err);
+      throw err;
+    }
+  }
+
+  static async updateMedicine(medicineId, remainingDossage) {
+    try {
+      const db = getDB();
+      await db.collection(collectionName).updateOne(
+        { _id: new ObjectId(medicineId)},
+        { $set: { RemainingDosage: remainingDossage } }
+      );
+    } catch (err) {
+      console.error("Error updating RemainingDosage:", err);
+    }
+  }
+
 };

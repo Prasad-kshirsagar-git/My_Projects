@@ -1,0 +1,19 @@
+<%- include('../layouts/head') %>
+</head>
+<body>
+  <%- include('../layouts/adminNav') %>
+
+  <main>
+    <div class="dashboard-container">
+      <!-- Greeting and Date -->
+      <div class="card">
+        <h2>Good Morning,  <%= user.userName %>!</h2>
+        <p>Today's Date: <%= new Date().toLocaleDateString("en-US", { weekday: 'long' , year: 'numeric' ,
+            month: 'long' , day: 'numeric' }) %>
+        </p>
+      </div>
+
+  </main>
+
+</body>
+</html>

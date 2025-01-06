@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(195, 241, 221)
+}
+
+
+ /* Grid styling for horizontal display */
+ .user-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Auto adjust columns */
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.user-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10%;
+} 
+
+.medicine-card p {
+  margin: 5px 0;
+  color: #300f83;
+}
+
+/* Ensure responsiveness */
+@media (max-width: 600px) {
+  .log-container {
+    grid-template-columns: 1fr; /* Stack items on small screens */
+  }
+}
+
+
+.search-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#searchInput {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+#searchButton {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#searchButton:hover {
+  background-color: #0056b3;
+}

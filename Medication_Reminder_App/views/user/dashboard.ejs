@@ -1,8 +1,8 @@
-<%- include('../partials/head') %>
+<%- include('../layouts/head') %>
   </head>
 
   <body>
-    <%- include('../partials/nav', {userId: userId}) %>
+    <%- include('../layouts/nav', {userId: userId}) %>
       <main>
         <div class="dashboard-container">
           <!-- Greeting and Date -->
@@ -11,34 +11,34 @@
             <p>Today's Date: <%= new Date().toLocaleDateString("en-US", { weekday: 'long' , year: 'numeric' ,
                 month: 'long' , day: 'numeric' }) %>
             </p>
+            <p>Time : <%=new Date().toLocaleTimeString() %></p>
           </div>
 
-          <!-- Upcoming Reminders -->
-          <div class="card">
-            <h3>Upcoming Reminders</h3>
-            <ul>
-              <% if (reminders.length> 0){%>
-                <% reminders.forEach(reminder=> { %>
-                  <li>
-                    <strong>
-                      <%= reminder.medicineName %>
-                    </strong> - <%= reminder.scheduleTime %>
-                  </li>
+          <div>
+            <h2 style="color: rgb(255, 0, 200); text-align: center;">Medicine History</h2>
+          </div>
+
+        <div class="container">         
+          <div class="medicine-container">
+              <% if (medicineHistory && medicineHistory.length> 0){%>
+                <% medicineHistory.forEach(medicine=> { %>
+                  <div class="medicine-card">
+                    <h3><%= medicine.medicineName %></h3>
+
+                    <p><strong>Schedule Time: </strong><%= medicine.scheduleTime %></p>
+
+                    <p><strong>Total Doses: </strong><%= medicine.totalDosage %></p>
+
+                    <p><strong>Remaining Dosage: </strong><%= medicine.RemainingDosage %></p>
+
+                  </div>
                   <% }); %>
-                    <% } else { %>
-                      <li>No reminders available</li>
-                      <li>Please Add Medicine</li>
-                      <% } %>
-            </ul>
+                <% } else { %>
+                <li>No Medicine History available</li>
+                <li>Please Add Medicine</li>
+              <% } %>
           </div>
-
-          <!-- Notifications -->
-          <div class="card">
-            <h3>Notifications</h3>
-            <p>
-              <%= notifications %>
-            </p>
-          </div>
+        </div>
         </div>
       </main>
 

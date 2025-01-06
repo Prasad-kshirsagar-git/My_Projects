@@ -1,33 +1,32 @@
-const path = require('path');
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authRoutes = require('./routes/appRoutes');
-const userRauter = require('./routes/userRouter')
-const rootDir = require('./utils/pathUtils');
-const session = require("express-session");
-const cookieParser = require("cookie-parser");
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const { mongoConnect } = require("./config/db");
+const appRoutes = require('./routes/appRoutes');
+const userRouter = require("./routes/userRouter");
+const medicineRoutes = require("./routes/medicineRoutes");
+const adminRoutes = require('./routes/adminRoutes');
+const errorHandler = require("./middlewares/errorHandler");
 
-const {mongoConnect} = require('./utils/databaseUtils');
-
-require('dotenv').config();
+// Check if express is defined
+if (!express || typeof express.Router !== 'function') {
+  throw new Error("Express is not defined or not imported correctly in app.js");
+}
 
 const app = express();
 
 // Middleware
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
-// app.use(express.static('public'));
-
-app.set('view engine', 'ejs');    // for use JS in html
-app.set('views', 'views');    // set the proper path of 
-
-app.use(express.static(path.join(rootDir,"public")));
-
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 app.use(express.urlencoded());
-
 app.use(cookieParser());
-
 app.use(
   session({
     secret: "your_secret_key",
@@ -38,14 +37,26 @@ app.use(
 );
 
 // Routes
-app.use(authRoutes);
-app.use(userRauter);
+app.use(appRoutes);
+app.use(userRouter);
+app.use("/admin", adminRoutes);
+app.use("/medicine", medicineRoutes);
 
-const PORT = 3000;
+// Error handling middleware
+app.use(errorHandler);
 
-// Start the server
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  next();
+});
+
+
+const PORT = process.env.PORT || 3000;
+// const MONGO_URL = process.env.MONGO_URL;
+
+// Use the MongoDB connection string from the .env file
 mongoConnect(() => {
   app.listen(PORT, () => {
-    console.log(`Server running on address http://localhost:${PORT}`);
+    console.log(`Server running on http://${process.env.APP_HOST}:${PORT}`);
   });
-})
+});

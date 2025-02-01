@@ -92,7 +92,7 @@ function SecurityKeyForSignUp() {
     securityKeyContainer.style.display = "none";
     document.getElementById("securityKey").required = false;
   }
-  
+
   if (role === "Patient") {
     securityKeyContainer.style.display = "block";
     document.getElementById("securityKey").required = true;

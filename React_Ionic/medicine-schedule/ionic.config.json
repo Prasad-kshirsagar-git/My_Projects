@@ -1,0 +1,7 @@
+{
+  "name": "medicine-schedule",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

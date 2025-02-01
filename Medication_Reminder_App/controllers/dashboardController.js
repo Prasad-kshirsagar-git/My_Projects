@@ -18,7 +18,8 @@ exports.postDashboard = async (req, res, next) => {
   const userId = req.session.userId;
   const securityKey = req.session.securityKey;
 
-  let { medicineName, Total_Doses, scheduleTime } = req.body;
+  let { medicineName, totalDoses, scheduleTime } = req.body;
+  console.log("type of totaldoses is :....:=> ",typeof(totalDoses));
 
   try {
 
@@ -40,16 +41,16 @@ exports.postDashboard = async (req, res, next) => {
       });
     }
 
-    const RemainingDosage = Total_Doses;
+    const remainingDosage = totalDoses;
     let newMedicine;
 
     if(securityKey) {
       newMedicine = new Medicine(
         userId,
         medicineName,
-        Total_Doses,
+        totalDoses,
         scheduleTime,
-        RemainingDosage,
+        remainingDosage,
         securityKey,
         
       )
@@ -57,9 +58,9 @@ exports.postDashboard = async (req, res, next) => {
       newMedicine = new Medicine(
         userId,
         medicineName,
-        Total_Doses,
+        totalDoses,
         scheduleTime,
-        RemainingDosage,
+        remainingDosage,
       );
     }
   

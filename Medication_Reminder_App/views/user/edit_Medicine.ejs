@@ -13,9 +13,9 @@
         data-id="<%= medicine._id %>" 
         data-time="<%= medicine.scheduleTime %>"
         data-name="<%= medicine.medicineName %>">
-          <h3><%= medicine.medicineName %></h3>
-          <p><strong>Dosage:</strong> <%= medicine.dosage %></p>
-          <p><strong>Schedule Time:</strong> <%= medicine.scheduleTime %></p>
+          <h3 id="medicineName"><%= medicine.medicineName %></h3>
+          <p id="totalDoses"><strong>Total Doses:</strong> <%= medicine.totalDoses %></p>
+          <p id="scheduleTime"><strong>Schedule Time:</strong> <%= medicine.scheduleTime %></p>
           <div class="btn">
             <button class="delete-btn">Delete</button>
             <button class="alarm-btn">Set Alarm</button>
@@ -25,7 +25,6 @@
       <% }); %>
     </div>
   </main>
-
   <script src="/js/script.js"></script>
 </body>
 </html>

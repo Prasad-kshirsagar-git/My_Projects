@@ -1,20 +1,21 @@
 const { getDB } = require("../config/db");
+const collectionName = process.env.COLLECTION_LOGS;
 
 module.exports = class Logs {
-  constructor(date,time, userId,userName, medicineId, medicineName,scheduleTime, securityKey = null) {
+  constructor(date,time, userId,userName, medicineId, medicineName,totalDosage,remainingDosage,scheduleTime, securityKey = null) {
     this.date = date;
     this.time = time;
     this.userId = userId;
     this.userName = userName;
     this.medicineId = medicineId;
     this.medicineName = medicineName;
+    this.totalDosage = totalDosage;
+    this.remainingDosage = remainingDosage;
     this.scheduleTime = scheduleTime;
     if(securityKey) {
       this.securityKey = securityKey;
     }
   } 
-
-  collectionName = process.env.COLLECTION_LOGS;
 
   async saveLogs() {
     try {
@@ -45,4 +46,16 @@ module.exports = class Logs {
       throw err;
     }
   }
+
+  static async findByIdAndDelete(medicineId) {
+      try {
+        const db = getDB();
+        return await db
+          .collection(collectionName)
+          .deleteOne({ medicineId: medicineId });
+      } catch (err) {
+        console.error("Error deleting medicine:", err);
+        throw err;
+      }
+    }
 }

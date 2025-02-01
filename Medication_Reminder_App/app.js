@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 });
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 // const MONGO_URL = process.env.MONGO_URL;
 
 // Use the MongoDB connection string from the .env file

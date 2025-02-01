@@ -1,0 +1,13 @@
+.my-item {
+  background-color: rgb(177, 227, 210);
+  margin-bottom: 5px;
+}
+
+.my-span {
+  font-weight: 700;
+  color: rgb(52, 2, 2);
+}
+
+.itemButton {
+  float: right;
+}

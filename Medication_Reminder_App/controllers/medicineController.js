@@ -2,18 +2,28 @@ const Medicine = require("../models/medicine");
 const UserModule = require("../models/user");
 const { ObjectId } = require("mongodb");
 const Logs = require("../models/logs");
-const { json } = require("body-parser");
 const twilio = require("twilio");
 
+const appServices = require("./appServices");
+
 exports.deleteMedicineById = async (req, res) => {
-  const { id: medicineId } = req.params;
+  let { id: medicineId } = req.params;
 
   try {
-    await Medicine.findByIdAndDelete(medicineId);
+    const medicineIdObj = new ObjectId(medicineId);
+    await Logs.findByIdAndDelete(medicineIdObj);
+    const result = await Medicine.findByIdAndDelete(medicineIdObj);
 
-    await Logs.findByIdAndDelete(medicineId);
+    if(result.affectedRows > 0) {
+      req.session.redirectData = {
+        ...req.session.redirectData,
+        medicineHistory: req.session.redirectData.medicineHistory.filter((medicine) => !medicine._id.equals(medicineIdObj))
+      };
+      res.status(200).send("Medicine deleted successfully");
+    } else {
+      res.status(404).json({ message: 'Medicine not found' });
+    }
 
-    res.status(200).send("Medicine deleted successfully");
   } catch (error) {
     console.error("Error deleting medicine:", error);
     res.status(500).send("Failed to delete medicine");
@@ -48,32 +58,11 @@ exports.setAlarm = async (req, res) => {
     const userName = user.userName;
     const phoneNumber = user.number;
 
-    const accountSid = process.env.TWILIO_ACCOUNT_SID; // Replace with your Twilio Account SID
-    const authToken = process.env.TWILIO_AUTH_TOKEN; // Replace with your Twilio Auth Token
-    const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER; // Replace with your Twilio phone number
+    await appServices.sendTextSms(res,user,medicine,scheduleTime,phoneNumber);
+    await appServices.triggerPhone(res,scheduleTime,phoneNumber);
 
-    const client = twilio(accountSid, authToken);
-
-    const message = `Hello ${userName}, you set an alarm at ${scheduleTime} for ${medicine.medicineName}.`;
-
-    // Send SMS using Twilio
-    client.messages
-      .create({
-        body: message,
-        from: twilioPhoneNumber,
-        to: "+91" + phoneNumber, // Ensure this is in the correct format (+1XXXXXXXXXX)
-      })
-      .then((message) => {
-        console.log("SMS sent:", message.sid);
-        res.status(200).send("Alarm set and SMS sent successfully!");
-      })
-      .catch((error) => {
-        console.error("Error sending SMS:", error);
-        res.status(500).send("Failed to send SMS");
-      });
   } catch (error) {
     console.error("Error setting alarm:", error);
-    res.status(500).send("Failed to set alarm");
   }
 };
 
@@ -94,14 +83,16 @@ exports.medicineTaken = async (req, res) => {
     const securityKey = req.session.securityKey;
 
     const medicine = await Medicine.findById(medicineId);
-    let RemainingDosage = parseInt(medicine.RemainingDosage);
+    const totalDosage = parseInt(medicine.totalDosage);
 
-    RemainingDosage = RemainingDosage - 1;
+    let remainingDoses = parseInt(medicine.remainingDoses);
 
-    if (RemainingDosage < 0) {
+    remainingDoses = remainingDoses - 1;
+
+    if (remainingDoses < 0) {
       return res.status(200).json({ message: "All dosage taken...!" });
     } else {
-      await Medicine.updateMedicine(medicineId, String(RemainingDosage));
+      await Medicine.updateMedicine(medicineId, String(remainingDoses));
 
       let logs;
 
@@ -113,6 +104,8 @@ exports.medicineTaken = async (req, res) => {
           user.userName,
           medicineId,
           medicineName,
+          totalDosage,
+          remainingDoses,
           scheduleTime,
           securityKey
         );
@@ -124,6 +117,8 @@ exports.medicineTaken = async (req, res) => {
           user.userName,
           medicineId,
           medicineName,
+          totalDosage,
+          remainingDoses,
           scheduleTime
         );
       }

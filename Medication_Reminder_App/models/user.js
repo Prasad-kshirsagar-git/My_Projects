@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const { getDB } = require("../config/db");
+const collectionName = process.env.COLLECTION_USER;
 
 module.exports = class User {
   constructor(role, userName, number, email, password, securityKey = null, _id) {
@@ -21,8 +22,6 @@ module.exports = class User {
       this._id = _id;
     }
   }
-
-  collectionName = process.env.COLLECTION_USER;
 
   async saveUser() {
     try {

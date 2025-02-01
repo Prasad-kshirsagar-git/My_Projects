@@ -1,27 +1,27 @@
 const { getDB } = require("../config/db");
 const { ObjectId } = require("mongodb");
 
+const collectionName = process.env.COLLECTION_MEDICINE;
+
 module.exports = class Medicine {
   constructor(
     userId,
     medicineName,
-    totalDosage,
+    totalDoses,
     scheduleTime,
-    RemainingDosage,
+    remainingDoses,
     securityKey = null
   ) {
     this.userId = userId;
     this.medicineName = medicineName;
-    this.totalDosage = totalDosage;
+    this.totalDoses = totalDoses;
     this.scheduleTime = scheduleTime;
-    this.RemainingDosage = RemainingDosage;
+    this.remainingDoses = remainingDoses;
 
     if (securityKey) {
       this.securityKey = securityKey;
     }
   }
-
-  collectionName = process.env.COLLECTION_MEDICINE;
 
   async addMedicine() {
     try {
@@ -118,7 +118,7 @@ module.exports = class Medicine {
       const db = getDB();
       await db.collection(collectionName).updateOne(
         { _id: new ObjectId(medicineId)},
-        { $set: { RemainingDosage: remainingDossage } }
+        { $set: { remainingDosage: remainingDossage } }
       );
     } catch (err) {
       console.error("Error updating RemainingDosage:", err);

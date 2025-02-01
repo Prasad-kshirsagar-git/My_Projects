@@ -1,7 +1,7 @@
 // const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken'); 
 const bcrypt = require('bcryptjs');
-const emailService = require("./emailService");
+const appServices = require("./appServices");
 
 const helperController = require("../controllers/helperController");
 
@@ -125,7 +125,7 @@ exports.postSignupPage = async (req, res, next) => {
     await user.saveUser();
 
     // send mail
-    await emailService.sendRegistrationEmail(userName, email, password);
+    await appServices.sendEmail(userName, email, password);
 
     res.render("auth/login", {
       pageTitle: "Login Page",
